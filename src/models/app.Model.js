@@ -69,13 +69,11 @@ const appSchema = mongoose.Schema(
     isNewDeveloper: {
       type: Boolean,
     },
-    description : {
-      type: String
+    description: {
+      type: String,
     },
-    userOwner: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+    aproxSize: {
+      type: Number,
     },
   },
   { timestamps: true }
