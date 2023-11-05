@@ -6,9 +6,11 @@ import bcrypt from "bcrypt";
 export const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    const existingUser = await User.findOne({ $or: [{username }, {email}] });
+    const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(400).json({ message: "Username or email already exists" });
+      return res
+        .status(400)
+        .json({ message: "Username or email already exists" });
     }
 
     //Encrypting password
@@ -24,6 +26,7 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
+  debugger;
   try {
     const { email, password } = req.body;
 
@@ -41,7 +44,7 @@ export const login = async (req, res) => {
     }
 
     const token = jwt.sign({ id: user._id }, "secret");
-    res.json({ token, userID: user._id, email, user});
+    res.json({ token, userID: user._id, email, user });
   } catch (error) {
     console.log(error.message);
     return res.status(500).send({ message: "error message" });
@@ -57,7 +60,7 @@ export const verifyToken = (req, res, next) => {
       }
       next();
     });
-  }else {
+  } else {
     res.sendStatus(401);
   }
 };
