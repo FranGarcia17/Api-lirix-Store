@@ -7,9 +7,14 @@ import {
   mostRatings,
   newDevelopers,
   registerApp,
+  savedAppsById,
+  saveApp
 } from "../controllers/app.controller.js";
 
 export const router = express.Router();
+
+// Save App
+router.put("/apps/save", saveApp);
 
 //GET all apps
 router.get("/apps", getAllApps);
@@ -33,3 +38,5 @@ router.get("/newdevelopers", newDevelopers);
 
 //GET APPS FROM HOUSE
 router.get("/fromhouse", fromHouse);
+
+router.get("/savedapps/:userid", savedAppsById);

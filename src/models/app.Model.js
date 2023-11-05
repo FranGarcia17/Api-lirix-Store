@@ -63,12 +63,20 @@ const appSchema = mongoose.Schema(
         date: Date,
       },
     ],
-    house : {
-        type: Boolean
+    house: {
+      type: Boolean,
     },
-    isNewDeveloper : {
-      type: Boolean
-    }
+    isNewDeveloper: {
+      type: Boolean,
+    },
+    description : {
+      type: String
+    },
+    userOwner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 );

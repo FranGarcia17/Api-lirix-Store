@@ -1,5 +1,7 @@
 import express from "express";
 import { App } from "../models/app.Model.js";
+import { User } from "../models/user.Model.js";
+import mongoose, { mongo } from "mongoose";
 
 export const getAllApps = async (req, res) => {
   try {
@@ -49,6 +51,7 @@ export const registerApp = async (req, res) => {
       comments,
       house,
       isNewDeveloper,
+      description,
     } = req.body;
 
     if (
@@ -69,7 +72,8 @@ export const registerApp = async (req, res) => {
       !webPage,
       !comments,
       !house,
-      !isNewDeveloper)
+      !isNewDeveloper,
+      !description)
     ) {
       return res.status(400).send({
         message: "Send all required fields",
@@ -95,6 +99,7 @@ export const registerApp = async (req, res) => {
       comments,
       house,
       isNewDeveloper,
+      description,
     };
 
     const app = await App.create(newApp);
@@ -142,7 +147,9 @@ export const mostRatings = async (req, res) => {
 
 export const newDevelopers = async (req, res) => {
   try {
-    const appsNewDevelopers = await App.find({ isNewDeveloper: true }).limit(10);
+    const appsNewDevelopers = await App.find({ isNewDeveloper: true }).limit(
+      10
+    );
     return res.status(200).send(appsNewDevelopers);
   } catch (error) {
     console.log(error.message);
@@ -157,5 +164,33 @@ export const fromHouse = async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(500).send({ message: error.message });
+  }
+};
+
+export const saveApp = async (req, res) => {
+  const app = await App.findById(req.body.appId);
+  const user = await User.findById(req.body.userId);
+
+  try {
+    user.savedApps.push(app);
+    await user.save();
+    res.status(201).json({savedApps : user.savedApps});
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+export const savedAppsById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    const savedApps = await App.find({
+      _id: { $in: user.savedApps },
+    });
+
+    console.log(savedApps);
+    res.status(201).json({ savedApps });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
   }
 };
