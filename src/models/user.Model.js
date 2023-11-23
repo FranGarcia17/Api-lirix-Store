@@ -16,7 +16,8 @@ const userSchema = mongoose.Schema(
             type: String,
             required: true
         },
-        savedApps: [{type: mongoose.Schema.Types.ObjectId, ref: "App"}],
+        cart: [{type: mongoose.Schema.Types.ObjectId, ref: "App"}],
+        cardSave: [{type: mongoose.Schema.Types.ObjectId, ref: "Card"}],
     }
 );
 

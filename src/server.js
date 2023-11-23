@@ -4,6 +4,7 @@ import cors from "cors";
 import { MONGO_URI, PORT } from "./config.js";
 import { router } from "./routes/app.js";
 import { router as router1 } from "./routes/user.js";
+import { router as router2 } from "./routes/card.js";
 
 const app = express();
 app.use(cors());
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 
 app.use("/api", router);
 app.use("/api", router1);
+app.use("/api", router2);
 
 //connection to DB and run server
 mongoose
